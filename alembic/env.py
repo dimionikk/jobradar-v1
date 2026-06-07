@@ -1,11 +1,20 @@
 import asyncio
-from logging.config import fileConfig
+import sys
 
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
+from logging.config import fileConfig
 from sqlalchemy.ext.asyncio import create_async_engine
 from alembic import context
 
 from app.core.config import settings
 from app.core.database import Base
+
+from app.models.user import User
+from app.models.vacancy import Vacancy
+from app.models.saved_vacancy import SavedVacancy
+from app.models.application import Application
 
 config = context.config
 if config.config_file_name is not None:
