@@ -1,7 +1,7 @@
 import httpx
 from typing import Optional
 from bs4 import BeautifulSoup
-
+from datetime import datetime
 REMOTIVE_API_URL = "https://remotive.com/api/remote-jobs"
 
 
@@ -35,6 +35,14 @@ def _parse_job(job: dict) -> Optional[dict]:
     if description:
         description = BeautifulSoup(description, "lxml").get_text(separator=" ").strip()[:5000]
 
+    created_at = None
+    date_str = job.get("publication_date")
+    if date_str:
+        try:
+            created_at = datetime.fromisoformat(date_str)
+        except ValueError:
+            created_at = None
+
     return {
         "title": title,
         "company": company,
@@ -46,5 +54,5 @@ def _parse_job(job: dict) -> Optional[dict]:
         "experience": None,
         "url": url,
         "source": "remotive",
-        "created_at": job.get("publication_date"),
+        "created_at": created_at,
     }
