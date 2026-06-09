@@ -1,10 +1,11 @@
 from pydantic import BaseModel
 from datetime import datetime
 
-from app.schemas.vacancy import VacancyResponse
-
 
 class SavedVacancyResponse(BaseModel):
     id: int
-    vacancy: VacancyResponse
+    user_id: int
+    vacancy_id: int
     saved_at: datetime
+
+    model_config = {"from_attributes": True}
