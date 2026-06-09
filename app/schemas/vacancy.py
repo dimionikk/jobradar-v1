@@ -18,6 +18,7 @@ class VacancyResponse(BaseModel):
     created_at: Optional[datetime] = None
     parsed_at: datetime
 
+    model_config = {"from_attributes": True}
 
 class VacancyFilter(BaseModel):
     source: Optional[str] = None
@@ -26,3 +27,4 @@ class VacancyFilter(BaseModel):
     salary_min: Optional[int] = None
     salary_max: Optional[int] = None
     city: Optional[str] = None
+    search: Optional[str] = None
