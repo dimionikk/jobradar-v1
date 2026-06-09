@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
-from app.routers import auth, profile, vacancies
+from app.routers import auth, profile, vacancies, ai
 from app.core.database import AsyncSessionLocal
 from app.services.parser import run_all_parsers
 
@@ -37,6 +37,7 @@ async def shutdown():
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(profile.router, prefix="/api/v1")
 app.include_router(vacancies.router, prefix="/api/v1")
+app.include_router(ai.router, prefix="/api/v1")
 
 @app.get("/health")
 async def health():
