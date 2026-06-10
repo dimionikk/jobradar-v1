@@ -1,12 +1,21 @@
 from fastapi import FastAPI
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.interval import IntervalTrigger
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import auth, profile, vacancies, ai, saved, applications
 from app.core.database import AsyncSessionLocal
 from app.services.parser import run_all_parsers
 
 app = FastAPI(title="JobRadar")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 scheduler = AsyncIOScheduler()
 
