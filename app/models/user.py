@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
+from typing import Optional
 
-from sqlalchemy import Boolean, DateTime, Integer, String, Text
+from sqlalchemy import DateTime, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.database import Base
@@ -9,21 +10,21 @@ from app.core.database import Base
 class User(Base):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    email: Mapped[str] = mapped_column(String, unique=True, nullable=False)
-    password: Mapped[str] = mapped_column(String, nullable=False)
-    
+    id: Mapped[int] = mapped_column(primary_key=True)
+    email: Mapped[str] = mapped_column(unique=True)
+    password: Mapped[str]
+
     # профіль
-    name: Mapped[str] = mapped_column(String, nullable=True)
-    stack: Mapped[str] = mapped_column(Text, nullable=True)
-    experience: Mapped[str] = mapped_column(String, nullable=True)
-    salary_min: Mapped[int] = mapped_column(Integer, nullable=True)
-    salary_max: Mapped[int] = mapped_column(Integer, nullable=True)
-    city: Mapped[str] = mapped_column(String, nullable=True)
-    work_type: Mapped[str] = mapped_column(String, nullable=True)
-    description: Mapped[str] = mapped_column(Text, nullable=True)
-    
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
+    name: Mapped[Optional[str]]
+    stack: Mapped[Optional[str]] = mapped_column(Text)
+    experience: Mapped[Optional[str]]
+    salary_min: Mapped[Optional[int]]
+    salary_max: Mapped[Optional[int]]
+    city: Mapped[Optional[str]]
+    work_type: Mapped[Optional[str]]
+    description: Mapped[Optional[str]] = mapped_column(Text)
+
+    is_active: Mapped[bool] = mapped_column(default=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         default=lambda: datetime.now(timezone.utc)

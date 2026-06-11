@@ -1,10 +1,8 @@
-from redis.asyncio import Redis
+from redis.asyncio import Redis, ConnectionPool
 from app.core.config import settings
 
+pool = ConnectionPool.from_url(settings.REDIS_URL)
 
 async def get_redis() -> Redis:
-    redis = Redis.from_url(settings.REDIS_URL)
-    try:
+    async with Redis(connection_pool=pool) as redis:
         yield redis
-    finally:
-        await redis.aclose()

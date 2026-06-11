@@ -1,4 +1,5 @@
-from fastapi import Depends, Header, HTTPException, status
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from redis.asyncio import Redis
 
@@ -7,18 +8,10 @@ from app.core.redis import get_redis
 from app.models.user import User
 from app.services.auth import get_current_user
 
-
-async def get_token(authorization: str = Header(...)) -> str:
-    if not authorization.startswith("Bearer "):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authorization header"
-        )
-    return authorization.split(" ")[1]
-
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
 async def get_authenticated_user(
-    token: str = Depends(get_token),
+    token: str = Depends(oauth2_scheme),
     db: AsyncSession = Depends(get_db),
     redis: Redis = Depends(get_redis)
 ) -> User:

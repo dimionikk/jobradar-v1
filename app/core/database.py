@@ -5,10 +5,15 @@ from typing import AsyncGenerator
 from app.core.config import settings
 
 
-engine = create_async_engine(settings.DATABASE_URL, echo=False)
+engine = create_async_engine(
+    settings.DATABASE_URL,
+    echo=settings.DEBUG
+)
 
 AsyncSessionLocal = sessionmaker(
-    engine, class_=AsyncSession, expire_on_commit=False
+    engine, 
+    class_=AsyncSession, 
+    expire_on_commit=False # об'єкти доступні після commit
 )
 
 

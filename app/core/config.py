@@ -17,10 +17,9 @@ class Settings(BaseSettings):
     # Anthropic
     ANTHROPIC_API_KEY: str
 
-    # App
-    APP_PORT: int = 8000
-
+    DEBUG: bool = False
+    
     model_config = {"env_file": ".env"}
 
-
+    
 settings = Settings()
